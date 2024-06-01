@@ -1,26 +1,50 @@
-import React from "react";
+import React,{useState} from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
-//create your first component
 const Home = () => {
+	//
+	const [nuevaTarea, setNuevatarea] = useState("")
+	const [tareas, setTareas] = useState(["make the bed","wash my hands"])
+
+	//
+	const actualizarValorNuevaTarea = (event) => {
+		setNuevatarea(event.target.value)
+	}
+
+	const adicionarNuevatarea = (event) => {
+		event.preventDefault()
+		setTareas([...tareas, nuevaTarea])
+		setNuevatarea("")
+	}
+
+
+	const borrarElementos = (index) => {
+		const arrayModificado = tareas.filter((item, i) =>i !== index)
+		setTareas(arrayModificado)
+	}
+
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="w-50 m-auto mt-5">
+			<form onSubmit={adicionarNuevatarea}>
+				<div className="mb-3">
+					<input className="form-control" id="exampleInputEmail" aria-describedby="emailHelp" value={nuevaTarea} onChange={actualizarValorNuevaTarea} />
+				</div>
+			</form>
+			<ul>
+				{
+					tareas.map((item,index) =>{
+						return(<li key={index}>{item} <button className="btn btn-primary" onClick={() => borrarElementos(index)}>x</button> </li>)
+					})
+				}
+			</ul>
+
+			{tareas.lenght === 0 ? <span></span> : <div>{tareas.lenght}</div>}
 		</div>
-	);
-};
+	)
+}
+
+
+
+
 
 export default Home;
